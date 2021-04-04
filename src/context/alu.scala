@@ -21,7 +21,7 @@ object alu {
   }
 
   private def not(args: List[Value]): Value = {
-    if(args.size != 1) throw new TypeException("1 inputs required by !")
+    if(args.size != 1) throw new TypeException("Only 1 input required by !")
     if(!args.head.isInstanceOf[Ordered[Value]]) throw new TypeException("Input to ! must be...")
     !args.asInstanceOf[Boole]
   }
@@ -33,7 +33,7 @@ object alu {
 
     if(args.size < 2) throw new TypeException("2 or more inputs required by +")
     args.head match {
-      case n: Addable => helper(args.head.asInstanceOf[Addable], args.tail )
+      case _: Addable => helper(args.head.asInstanceOf[Addable], args.tail )
       case _ => throw new TypeException("Inputs to + must be addable")
     }
   }
@@ -47,7 +47,7 @@ object alu {
 
     if(args.size < 2) throw new TypeException("2 or more inputs required by +")
     args.head match {
-      case _: Addable => helper(args.head.asInstanceOf[Numeric], args.tail )
+      case _: Numeric => helper(args.head.asInstanceOf[Numeric], args.tail )
       case _ => throw new TypeException("Inputs to * must be numeric")
     }
   }
@@ -61,7 +61,7 @@ object alu {
 
     if(args.size < 2) throw new TypeException("2 or more inputs required by -")
     args.head match {
-      case _: Addable => helper(args.head.asInstanceOf[Numeric], args.tail )
+      case _: Numeric => helper(args.head.asInstanceOf[Numeric], args.tail )
       case _ => throw new TypeException("Inputs to + must be numeric")
     }
   }
@@ -87,7 +87,7 @@ object alu {
   }
 
   private def unequals(args: List[Value]): Value ={
-    if(args.size != 2) throw new TypeException("2 inputs required by ==")
+    if(args.size != 2) throw new TypeException("2 inputs required by !=")
     if(!args.head.isInstanceOf[Ordered[Value]]) throw new TypeException("Inputs to == must be orderable")
     Boole(!args.head.equals(args(1)))
   }

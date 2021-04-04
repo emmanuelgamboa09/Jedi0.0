@@ -22,6 +22,8 @@ case class Boole(value: Boolean) extends Literal{
 
   override def toString: String = value.toString
 
+  override def hashCode(): Int = this.toString.##
+
   override def execute(env: Environment): Value = ???
 }
 

@@ -25,6 +25,8 @@ case class Chars(value: String) extends Addable with Ordered[Value]{
 
   override def toString: String = value
 
+  override def hashCode(): Int = this.toString.##
+
   override def execute(env: Environment): Value = ???
 
   override def compare(other: Value): Int =

@@ -55,5 +55,6 @@ case class Exact(value: Int) extends Numeric with Ordered[Value] {
   override def toString: String = this.value.toString
 
   // *, -, /, hashCode, etc.
+  override def hashCode(): Int = this.toString.##
   override def execute(env: Environment): Value = ???
 }

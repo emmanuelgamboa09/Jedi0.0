@@ -1,8 +1,8 @@
 package test
 
 import context._
-import value._
 import expression._
+import value._
 
 object testALU extends App {
   try {
@@ -13,6 +13,4 @@ object testALU extends App {
   } catch {
     case e: Exception => println(e)
   }
-
-
 }
