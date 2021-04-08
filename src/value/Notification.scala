@@ -5,7 +5,7 @@ case class Notification(notification: String) extends Value{
 }
 
 object Notification{
-  def OK: Notification = Notification("OK")
-  def DONE: Notification = Notification("DONE")
-  def UNSPECIFIED: Notification = Notification("UNSPECIFIED")
+  val OK: Notification = Notification("OK")
+  val DONE: Notification = Notification("DONE")
+  val UNSPECIFIED: Notification = Notification("UNSPECIFIED")
 }
