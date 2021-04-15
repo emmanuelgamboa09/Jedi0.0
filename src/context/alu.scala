@@ -5,7 +5,7 @@ import value._
 
 import scala.annotation.tailrec
 
-object alu {
+case object alu {
 
   def execute(opcode: Identifier, args: List[Value]): Value = opcode.name match {
     case "add" => add(args)            // n-ary
@@ -104,7 +104,7 @@ object alu {
   private def not(args: List[Value]): Value = {
     if(args.size != 1) throw new TypeException("Only 1 input required by !")
     if(!args.head.isInstanceOf[Boole]) throw new TypeException("Input to not must be a value")
-    Boole(!args.head.asInstanceOf[Boole].value)
+    !args.head.asInstanceOf[Boole]
   }
   // etc.
 }
