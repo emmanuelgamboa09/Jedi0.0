@@ -40,9 +40,15 @@ class Jedi1Parsers extends RegexParsers {
     case con ~ more => Conjunction(con::more)
   }
   // equality ::= inequality ~ ("==" ~ inequality)?
-  def equality: Parser[Expression] = inequality ~ rep("==" ~> inequality) ^^ {
-    case con ~ Nil => con
-    case con ~ more => FunCall(Identifier("equals"), con::more)
+  def equality: Parser[Expression] = inequality ~ opt("==" ~ inequality) ^^ {
+    case con ~ None => con
+    case con ~ some => parseEquality(con, some.get)
+  }
+
+  private def parseEquality(some: Expression, list: ~[String, Expression]) = {
+    list match {
+      case ~("==", exp) =>FunCall(Identifier("equals"), List(some, exp))
+    }
   }
   // inequality ::= sum ~ (("<" | ">" | "!=") ~ sum)?
   def inequality: Parser[Expression] = sum ~ opt(("<"|">"|"!=") ~ sum) ^^ {
@@ -52,14 +58,15 @@ class Jedi1Parsers extends RegexParsers {
 
   private def parseInequality(some: Expression, list: ~[String, Expression]) = {
     list match {
-      case ~("<", t) => FunCall(Identifier("less"), List(some, t))
-      case ~(">", t)=> FunCall(Identifier("more"), List(some, t))
-      case ~("!=", t)=> FunCall(Identifier("unequals"), List(some, t))
+      case ~("<", exp) => FunCall(Identifier("less"), List(some, exp))
+      case ~(">", exp)=> FunCall(Identifier("more"), List(some, exp))
+      case ~("!=", exp)=> FunCall(Identifier("unequals"), List(some, exp))
     }
   }
   // sum ::= product ~ ("+" | "-") ~ product)*
   def sum: Parser[Expression] = product ~ rep(("+"|"-") ~ product) ^^ {
     case p ~ more => parseSums(p, more)
+    case p ~ Nil => p
   }
 
   // use tail recursion to imitate left reduce

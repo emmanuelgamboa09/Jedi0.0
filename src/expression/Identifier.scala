@@ -2,12 +2,13 @@ package expression
 import context.{Environment, UndefinedException}
 import value.Value
 
+import scala.collection.mutable
+
 case class Identifier(name: String) extends Expression {
   override def toString: String = name
 
   override def execute(env: Environment): Value = {
-    env match{
-      case _ if env.contains(this) => env(this)
+    env(this) match{
       case value: Value => value
       case _ => throw new UndefinedException(this)
     }
