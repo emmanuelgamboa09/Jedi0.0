@@ -1,6 +1,5 @@
 package context
 
-import value._
 import scala.io._
 /*
  * Notes:
@@ -9,7 +8,7 @@ import scala.io._
  * console.main launches repl or executes a Jedi file
  */
 object console {
-  val parsers = new Jedi1Parsers // for now
+  val parsers = new Jedi2Parsers // for now
   val globalEnv = new Environment
   var verbose = false
 

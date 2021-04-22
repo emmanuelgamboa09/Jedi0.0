@@ -18,6 +18,13 @@ case object alu {
     case "unequals" => unequals(args)  // binary
     case "not" => not(args)            // unary
 //     TBC
+    case "write" =>write(args)
+  }
+
+  private def write(value: List[Value]): Value = {
+    for(i <- value.indices)
+      println(value(i))
+    Notification.DONE
   }
 
   private def add(args: List[Value]): Value = {

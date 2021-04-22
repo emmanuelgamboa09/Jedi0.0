@@ -1,12 +1,13 @@
 package test
 
-import context.Environment
+import context._
 import expression._
-import value.Exact.Integer
+import value._
+
 
 object FunCallTest extends App {
   val globalEnvironment = new Environment
-  val operands = List(Integer(6), Integer(7))
+  val operands = List(Exact(6), Exact(7))
   var exp = FunCall(Identifier("add"), operands)
   println(exp.execute(globalEnvironment))
   exp = FunCall(Identifier("less"), operands)

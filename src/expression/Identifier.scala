@@ -2,8 +2,6 @@ package expression
 import context.{Environment, UndefinedException}
 import value.Value
 
-import scala.collection.mutable
-
 case class Identifier(name: String) extends Expression {
   override def toString: String = name
 
