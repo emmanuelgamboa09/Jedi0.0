@@ -19,12 +19,12 @@ case object alu {
     case "not" => not(args)            // unary
 //     TBC
     case "write" =>write(args)
-  }
-
-  private def write(value: List[Value]): Value = {
-    for(i <- value.indices)
-      println(value(i))
-    Notification.DONE
+    case "list" => list(args)
+    case "car" => car(args)
+    case "cdr" => cdr(args)
+    case "var" => makeVar(args)
+    case "dereference" => dereference(args)
+    case _ => throw new UndefinedException(opcode)
   }
 
   private def add(args: List[Value]): Value = {
@@ -32,7 +32,6 @@ case object alu {
     def helper(result: Addable, unseen: List[Value]): Addable =
       if(unseen == Nil) result
       else helper(result + unseen.head, unseen.tail)
-
     if(args.size < 2) throw new TypeException("2 or more inputs required by add")
     args.head match {
       case _: Addable => helper(args.head.asInstanceOf[Addable], args.tail )
@@ -113,5 +112,48 @@ case object alu {
     if(!args.head.isInstanceOf[Boole]) throw new TypeException("Input to not must be a value")
     !args.head.asInstanceOf[Boole]
   }
-  // etc.
+
+  private def write(value: List[Value]): Value = {
+    for(i <- value.indices)
+      println(value(i))
+    Notification.DONE
+  }
+
+  private def list(args: List[Value]): Value = {
+    @tailrec
+    def helper(first: Pair, result: Pair, unseen: List[Value]): Value = {
+      if(unseen == Nil) {
+        result.second = getEmpty
+        return first
+      }
+      val temp = Pair(unseen.head)
+      result.second = temp
+      helper(first, temp, unseen.tail)
+    }
+    val temp = Pair(args.head, Pair())
+    helper(temp, temp, args.tail)
+  }
+
+  private def car(args: List[Value]): Value = {
+    if(args.size != 1) throw new TypeException("Only 1 input required by car");
+    if(!args.head.isInstanceOf[Pair]) throw new TypeException("Must be a pair or list inorder to use cars")
+    args.head.asInstanceOf[Pair].first
+  }
+
+  private def cdr(args: List[Value]): Value = {
+    if(args.size != 1) throw new TypeException("Only 1 input required by car");
+    if(!args.head.isInstanceOf[Pair]) throw new TypeException("Must be a pair or list inorder to use cars")
+    args.head.asInstanceOf[Pair].second
+  }
+
+  private def makeVar(args: List[Value]): Value = {
+    if(args.size != 1) throw new TypeException("Only 1 assignment is allowed per variable")
+    Variable(args.head)
+  }
+
+  private def dereference(args: List[Value]): Value = {
+    if(!args.head.isInstanceOf[Variable]) throw new TypeException("Can only dereference variables")
+    args.head.asInstanceOf[Variable].content
+  }
+  private def getEmpty: Value = empty
 }

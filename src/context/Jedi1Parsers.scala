@@ -109,7 +109,7 @@ class Jedi1Parsers extends RegexParsers {
   // exact ::= 0|(\+|-)?[1-9][0-9]*
   def exact: Parser[Exact] = """0|(\\+|-)?[1-9][0-9]*""".r ^^ (exact => Exact(exact.toInt))
   // inexact ::= (\+|-)?[0-9]+\.[0-9]+
-  def inexact: Parser[Inexact] = """(\+|-)?[0-9]+\.[0-9]+""".r ^^ (inexact => Inexact(inexact.toDouble))
+  def inexact: Parser[Inexact] = """(\+|-)?[0-9]*\.[0-9]+""".r ^^ (inexact => Inexact(inexact.toDouble))
   // boole ::= true|false
   def boole: Parser[Boole] = """true|false""".r ^^ (boole => Boole(boole.toBoolean))
   // identifier ::= [a-zA-Z][a-zA-Z0-9]*

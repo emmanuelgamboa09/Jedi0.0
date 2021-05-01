@@ -28,7 +28,30 @@ class Jedi2Parsers extends Jedi1Parsers {
     case "{" ~ expression ~ expressions ~ "}" => Block(expression::expressions)
   }
 
+  def freeze: Parser[MakeThunk] = "freeze" ~ "(" ~ expression ~ ")" ^^ {
+    case "freeze" ~ "(" ~ expression ~ ")" => MakeThunk(expression)
+  }
+
+  def delay: Parser[MakeText] = "delay" ~ "(" ~ expression ~ ")" ^^ {
+    case "delay" ~ "(" ~ expression ~ ")" => MakeText(expression)
+  }
+
+  def cons: Parser[MakePair] = "cons" ~ "(" ~ expression ~ "," ~ expression ~ ")" ^^{
+    case "cons" ~ "(" ~ expression1 ~ "," ~ expression2 ~ ")" => MakePair(expression1, expression2)
+  }
+
+  def list: Parser[Expression] = "list" ~ "(" ~ expression ~ rep("," ~> expression) ~ ")" ^^{
+    case "list" ~ "(" ~ expression ~ expressions ~ ")" => FunCall(Identifier("list"), expression::expressions)
+  }
+
+  def car: Parser[Expression] = "car" ~ "(" ~ expression ~ ")" ^^ {
+    case "car" ~ "(" ~ expression ~ ")" => FunCall(Identifier("car"), List(expression))
+  }
+
+  def cdr: Parser[Expression] = "cdr" ~ "(" ~ expression ~ ")" ^^ {
+    case "cdr" ~ "(" ~ expression ~ ")" => FunCall(Identifier("cdr"), List(expression))
+  }
 
   // override of term parser
-  override def term: Parser[Expression]  = lambda | funCall | block | literal | "("~>expression<~")"
+  override def term: Parser[Expression]  =  car | cdr | list | cons | lambda | freeze | delay| funCall | block | literal | "("~>expression<~")"
 }
