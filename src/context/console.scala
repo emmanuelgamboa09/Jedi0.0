@@ -1,6 +1,7 @@
 package context
 
 import scala.io._
+
 /*
  * Notes:
  * console is Jedi's user interface
@@ -17,10 +18,10 @@ object console {
     tree match {
       case tree: parsers.Failure => throw new SyntaxException(tree)
       case _ => {
-        val exp = tree.get  // get the expression from the tree
+        val exp = tree.get // get the expression from the tree
         //println("translation: " + exp.emit)
-        val result = exp.execute(globalEnv)  // execute the expression
-        result.toString  // return string representation of result
+        val result = exp.execute(globalEnv) // execute the expression
+        result.toString // return string representation of result
       }
     }
   }
@@ -67,12 +68,11 @@ object console {
   }
 
 
-
   // read-execute-print loop
   def repl {
     var more = true
     var cmmd = ""
-    while(more) {
+    while (more) {
       try {
         print("-> ")
         cmmd = StdIn.readLine
@@ -116,7 +116,7 @@ object console {
     else
       try {
         executeFile(args(0))
-      } catch  {
+      } catch {
         case e: Exception => {
           println(e)
         }

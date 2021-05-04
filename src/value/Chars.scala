@@ -1,7 +1,8 @@
 package value
+
 import context.TypeException
 
-case class Chars(value: String) extends Addable with Ordered[Value]{
+case class Chars(value: String) extends Addable with Ordered[Value] {
 
   def size: Exact = Exact(value.length)
 
@@ -18,13 +19,15 @@ case class Chars(value: String) extends Addable with Ordered[Value]{
   }
 
   override def equals(obj: Any): Boolean = {
-    obj match{
+    obj match {
       case x: Chars => x.value == this.value
       case _ => false
     }
   }
 
-  override def compare(other: Value): Int = this.value.compare(other.toString)
+  override def compare(other: Value): Int = this.compareTo(other)
+
   override def toString: String = value
+
   override def hashCode(): Int = this.toString.##
 }

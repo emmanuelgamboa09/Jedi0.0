@@ -11,7 +11,7 @@ class Environment(var extension: Environment = null)
   // used by closures to bind parameters to arguments
   def bulkPut(params: List[Identifier], args: List[Value]) {
     if (params.length != args.length) throw new TypeException("# arguments != #parameters")
-    for(i <- params.indices) this.put(params(i), args(i))
+    for (i <- params.indices) this.put(params(i), args(i))
   }
 
   override def contains(name: Identifier): Boolean = {

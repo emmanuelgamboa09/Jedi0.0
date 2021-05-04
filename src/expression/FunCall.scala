@@ -1,10 +1,12 @@
 package expression
+
 import context._
 import value.{Closure, Value}
+
 case class FunCall(operator: Identifier, operands: List[Expression]) extends Expression {
   override def execute(env: Environment): Value = {
     var args: List[Value] = Nil
-    if(env.contains(operator)){
+    if (env.contains(operator)) {
       if (flags.paramPassing == flags.BY_NAME) {
         args = operands.map(MakeThunk(_).execute(env))
       } else {
@@ -17,9 +19,11 @@ case class FunCall(operator: Identifier, operands: List[Expression]) extends Exp
       } catch {
         case _: UndefinedException => alu.execute(operator, args)
       }
-    }else{
+    } else {
       args = operands.map(_.execute(env))
       alu.execute(operator, args)
     }
   }
 }
+
+

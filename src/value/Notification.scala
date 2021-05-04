@@ -1,10 +1,10 @@
 package value
 
-case class Notification(notification: String) extends Value{
+case class Notification(notification: String) extends Value {
   override def toString: String = notification
 }
 
-object Notification{
+object Notification {
   val OK: Notification = Notification("OK")
   val DONE: Notification = Notification("DONE")
   val UNSPECIFIED: Notification = Notification("UNSPECIFIED")

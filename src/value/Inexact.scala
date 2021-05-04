@@ -1,12 +1,13 @@
 package value
+
 import context.{IllegalValueException, TypeException}
 
 case class Inexact(value: Double) extends Numeric with Ordered[Value] {
 
   override def /(other: Value): Numeric = {
     other match {
-      case x: Inexact => if(x.value == 0.0) throw new IllegalValueException("Divide by 0!") else Inexact(this.value / x.value)
-      case x: Exact => if(x.value == 0) throw new IllegalValueException("Divide by 0!") else Inexact(this.value / x.value.toDouble)
+      case x: Inexact => if (x.value == 0.0) throw new IllegalValueException("Divide by 0!") else Inexact(this.value / x.value)
+      case x: Exact => if (x.value == 0) throw new IllegalValueException("Divide by 0!") else Inexact(this.value / x.value.toDouble)
       case _ => throw new TypeException("Numeric operand required")
     }
   }
@@ -49,6 +50,8 @@ case class Inexact(value: Double) extends Numeric with Ordered[Value] {
       case x: Exact => this.value.compare(x.value.toDouble)
       case _ => throw new TypeException("Arguments must be comparable")
     }
+
   override def toString: String = this.value.toString
+
   override def hashCode(): Int = this.toString.##
 }
